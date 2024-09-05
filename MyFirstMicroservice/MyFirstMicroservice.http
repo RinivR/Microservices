@@ -1,0 +1,16 @@
+@MyFirstMicroservice_HostAddress = http://localhost:5212
+
+GET {{MyFirstMicroservice_HostAddress}}/kledingGelegenheden/
+Accept: application/json
+
+###
+
+Post {{TodoApi_HostAddress}}/toevoegenKleding
+Content-Type: application/json
+
+{
+  "name":"walk dog",
+  "isComplete":true
+}
+
+###
