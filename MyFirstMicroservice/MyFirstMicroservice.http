@@ -1,19 +1,4 @@
-@MyFirstMicroservice_HostAddress = https://localhost:5212
-
-# GET {{MyFirstMicroservice_HostAddress}}/kledingGelegenheden/
-# Accept: application/json
-
-# ###
-
-# Post {{TodoApi_HostAddress}}/toevoegenKleding
-# Content-Type: application/json
-
-# {
-#   "name":"walk dog",
-#   "isComplete":true
-# }
-
-# ###
+@MyFirstMicroservice_HostAddress = https://localhost:7205
 
 // The POST request needs headers and a body. To define those parts of the request,
 // add the following lines immediately after the POST request line:
@@ -24,5 +9,19 @@ Content-Type: application/json
   "name":"walk dog",
   "isComplete":true
 }
+
+###
+
+PUT {{MyFirstMicroservice_HostAddress}}/todoitems/3
+Content-Type: application/json
+
+{
+  "name": "feed fish",
+  "isComplete": false
+}
+
+###
+
+DELETE {{MyFirstMicroservice_HostAddress}}/todoitems/6
 
 ###
