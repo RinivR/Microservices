@@ -25,3 +25,7 @@ Content-Type: application/json
 DELETE {{MyFirstMicroservice_HostAddress}}/todoitems/6
 
 ###
+
+GET {{MyFirstMicroservice_HostAddress}}/todoitems/
+
+###

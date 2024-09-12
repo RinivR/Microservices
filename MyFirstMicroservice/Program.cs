@@ -12,29 +12,31 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 WebApplication app = builder.Build();
 
-app.MapGet("/todoitems", async (TodoDb db) =>
+RouteGroupBuilder todoItems = app.MapGroup("/todoitems");
+
+todoItems.MapGet("/", async (TodoDb db) =>
     await db.Todos.ToListAsync());
 
-app.MapGet("/todoitems/complete", async (TodoDb db) =>
+todoItems.MapGet("/complete", async (TodoDb db) =>
     await db.Todos.Where(t => t.IsComplete).ToListAsync());
 
-app.MapGet("/todoitems/{id}", async (int id, TodoDb db) =>
+todoItems.MapGet("/{id}", async (int id, TodoDb db) =>
     await db.Todos.FindAsync(id)
         is Todo todo
             ? Results.Ok(todo)
             : Results.NotFound());
 
-app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
+todoItems.MapPost("/", async (Todo todo, TodoDb db) =>
 {
     db.Todos.Add(todo);
     //adds data to the in-memory database:
     await db.SaveChangesAsync();
 
-    return Results.Created($"/todoitems/{todo.Id}", todo);
+    return Results.Created($"/{todo.Id}", todo);
 });
 
 // PUT (wijzigen) requires a complete data set for the resource, whereas POST handles partial data for creating new resources
-app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, TodoDb db) =>
+todoItems.MapPut("/{id}", async (int id, Todo inputTodo, TodoDb db) =>
 {
     Todo ?todo = await db.Todos.FindAsync(id);
     if (todo is null) return Results.NotFound("The todo item does not exist");
@@ -47,7 +49,7 @@ app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, TodoDb db) =>
     return Results.Ok($"The todo item with {id} is changed. Thank you");
 });
 
-app.MapDelete("/todoitems/{id}", async (int id, TodoDb db) =>
+todoItems.MapDelete("/{id}", async (int id, TodoDb db) =>
 {
     if (await db.Todos.FindAsync(id) is Todo todo)
     {
